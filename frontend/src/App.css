@@ -200,6 +200,7 @@
     .operador{
         border: solid 1px #DADEEB;
         width: 280px;
+        height: 330px;
     }
     .operador-imagen-contenedor img{
         height: 100%;
@@ -486,6 +487,7 @@
     .operador{
         border: solid 1px #DADEEB;
         width: 280px;
+        height: 290px;
     }
     .operador-imagen-contenedor img{
         height: 100%;
@@ -774,6 +776,7 @@
     .operador{
         border: solid 1px #DADEEB;
         width: 200px;
+        height: 240px;
     }
     .operador-imagen-contenedor img{
         height: 100%;

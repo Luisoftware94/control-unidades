@@ -55,24 +55,24 @@ class ObtenerUnidades extends Component{
                                                 <div className="operadores-unidad center-align hide-on-med-and-down">
                                                     <div className="operador left">
                                                         {
-                                                            unidad.operador1 ? <ObtenerOperador id={unidad.operador1} operador="1" unidad={unidad.numUnidad}/> : <p className="vertical-center">No asignado</p>
+                                                            unidad.operador1 !== "" ? <ObtenerOperador id={unidad.operador1} operador="1" unidad={unidad.numUnidad}/> : <p className="vertical-center">No asignado</p>
                                                         }
                                                     </div>
                                                     <div className="operador right">
                                                         {
-                                                            unidad.operador2 ? <ObtenerOperador id={unidad.operador2} operador="2" unidad={unidad.numUnidad}/> : <p className="vertical-center">No asignado</p>
+                                                            unidad.operador2 !== "" ? <ObtenerOperador id={unidad.operador2} operador="2" unidad={unidad.numUnidad}/> : <p className="vertical-center">No asignado</p>
                                                         }
                                                     </div>
                                                 </div>
                                                 <div className="operadores-unidad center-align hide-on-large-only">
                                                     <div className="operador">
                                                         {
-                                                            unidad.operador1 ? <ObtenerOperador id={unidad.operador1} operador="1" unidad={unidad.numUnidad}/> : <p className="vertical-center">No asignado</p>
+                                                            unidad.operador1 !== "" ? <ObtenerOperador id={unidad.operador1} operador="1" unidad={unidad.numUnidad}/> : <p className="vertical-center">No asignado</p>
                                                         }
                                                     </div>
                                                     <div className="operador">
                                                         {
-                                                            unidad.operador2 ? <ObtenerOperador id={unidad.operador2} operador="2" unidad={unidad.numUnidad}/> : <p className="vertical-center">No asignado</p>
+                                                            unidad.operador2 !== "" ? <ObtenerOperador id={unidad.operador2} operador="2" unidad={unidad.numUnidad}/> : <p className="vertical-center">No asignado</p>
                                                         }
                                                     </div>
                                                 </div>

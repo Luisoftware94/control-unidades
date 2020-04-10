@@ -1,7 +1,7 @@
 const operadoresCtrl = {};
 
 const Operador = require('../models/Operador');
-
+const Unidad = require('../models/Unidad');
 operadoresCtrl.createOperador = async (req, res) => {
     const { nombre, numEmpleado, telefono, estado } = req.body;
     const operador = await Operador.findOne({numEmpleado: numEmpleado});
@@ -47,12 +47,24 @@ operadoresCtrl.getOperador = async (req, res) => {
 
 operadoresCtrl.updateOperador = async (req, res) => {
     const { nombre, numEmpleado, telefono, estado } = req.body;
-    await Operador.findByIdAndUpdate(req.params.id, {
-        nombre,
-        numEmpleado,
-        telefono,
-        estado
-    });
+    if(req.files.fotografia){
+        const urlFotografia = req.files.fotografia.path;
+        const pathFotografia = urlFotografia.slice(7);
+        await Operador.findByIdAndUpdate(req.params.id, {
+            nombre,
+            numEmpleado,
+            telefono,
+            estado,
+            pathFotografia
+        });    
+    } else{
+        await Operador.findByIdAndUpdate(req.params.id, {
+            nombre,
+            numEmpleado,
+            telefono,
+            estado
+        });
+    }
     res.json({message: 'Operador actualizado'});
 }
 
@@ -73,8 +85,22 @@ operadoresCtrl.updateOperadorDesasignado = async (req, res) => {
 }
 
 operadoresCtrl.deleteOperador = async (req, res) => {
+    const unidades = await Unidad.find(); 
+    unidades.map(async unidad => {
+        if(req.params.id === unidad.operador1){
+            await Unidad.findByIdAndUpdate(unidad._id, {
+                operador1: ""
+            });
+        }
+        if(req.params.id === unidad.operador2){
+            await Unidad.findByIdAndUpdate(unidad._id, {
+                operador2: ""
+            });
+        }
+    });
     await Operador.findByIdAndDelete(req.params.id);
     res.json({message: 'Operador eliminado'});
+
 }
 
 module.exports = operadoresCtrl;
