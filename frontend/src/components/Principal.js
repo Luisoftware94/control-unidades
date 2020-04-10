@@ -6,7 +6,7 @@ import axios from 'axios';
 import ObtenerOperador from './ObtenerOperador';
 import ObtenerNombreRol from './ObtenerNombreRol';
 import ObtenerEstadoUnidad from './ObtenerEstadoUnidad';
-const ip = "http://192.168.1.166:4000/";
+const ip = "http://localhost:4000/"
 
 export default class Principal extends Component {
     state = {

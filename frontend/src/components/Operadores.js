@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-const ip = "http://192.168.1.166:4000/";
+const ip = "http://localhost:4000/"
 
 export default class Operadores extends Component {
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import M from 'materialize-css'
 import axios from 'axios'
 import FormData from 'form-data'
-const ip = "http://192.168.1.166:4000/";
+const ip = "http://localhost:4000/";
 
 export default class CreateOperador extends Component {
     

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import M from 'materialize-css';
-const ip = "http://192.168.1.166:4000/";
+const ip = "http://localhost:4000/";
 
 export default class CreateRol extends Component {
     state = {

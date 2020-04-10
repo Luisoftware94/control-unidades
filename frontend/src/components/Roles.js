@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ObtenerUnidad from './ObtenerUnidad';
-const ip = "http://192.168.1.166:4000/";
+const ip = "http://localhost:4000/"
 
 export default class Roles extends Component {
     state = {
