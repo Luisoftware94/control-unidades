@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Clock from './Clock';
+import Logout from './Logout';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 
-export default class Navbar extends Component {
-    componentDidMount(){
+class Navbar extends Component {
+  static propTypes = {
+      auth: PropTypes.object.isRequired
+  };
+  componentDidMount(){
+    this.tabSelected();
+  }
+    componentDidUpdate(){
       this.tabSelected();
     }
     tabSelected(){
@@ -29,6 +38,7 @@ export default class Navbar extends Component {
             break;
         }
     }
+    
     render() {
         return (
         <nav className="nav-extended">
@@ -42,9 +52,19 @@ export default class Navbar extends Component {
               <li className="tab" id="roles" onClick={() => this.tabSelected()}><Link className="" to="/roles">Roles</Link></li>
               <li className="tab" id="unidades" onClick={() => this.tabSelected()}><Link className="" to="/unidades">Unidades</Link></li>
               <li className="tab" id="operadores" onClick={() => this.tabSelected()}><Link className="" to="/operadores">Operadores</Link></li>
+              {
+                this.props.auth.isAuthenticated ?
+                  <li className="tab">
+                    <Logout />
+                  </li> : null
+              }
             </ul>
           </div>
         </nav>
         )
     }
 }
+const mapStateToProps = state => ({
+  auth: state.auth  
+});
+export default connect(mapStateToProps, null)(Navbar);

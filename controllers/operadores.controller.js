@@ -1,9 +1,12 @@
-const operadoresCtrl = {};
+const { Router } = require('express');
+const router = Router();
+const auth = require('../middleware/auth');
 
 const Operador = require('../models/Operador');
 const Unidad = require('../models/Unidad');
-operadoresCtrl.createOperador = async (req, res) => {
-    const { nombre, numEmpleado, telefono, estado } = req.body;
+
+router.post('/', async (req, res) => {
+    const { nombre, numEmpleado, telefono, estado, compania, numImss, numLicencia, tipoLicencia, vencimientoLicencia, medicinaPreventiva, vencimientoMedicinaPreventiva } = req.body;
     const operador = await Operador.findOne({numEmpleado: numEmpleado});
     if(!operador){
         if(req.files.fotografia){
@@ -14,7 +17,14 @@ operadoresCtrl.createOperador = async (req, res) => {
                 numEmpleado, 
                 telefono, 
                 estado,
-                pathFotografia
+                pathFotografia,
+                compania,
+                numImss,
+                numLicencia,
+                tipoLicencia,
+                vencimientoLicencia,
+                medicinaPreventiva,
+                vencimientoMedicinaPreventiva
             });
             await newOperador.save();
         } else{
@@ -22,7 +32,14 @@ operadoresCtrl.createOperador = async (req, res) => {
                 nombre, 
                 numEmpleado, 
                 telefono, 
-                estado
+                estado,
+                compania,
+                numImss,
+                numLicencia,
+                tipoLicencia,
+                vencimientoLicencia,
+                medicinaPreventiva,
+                vencimientoMedicinaPreventiva
             });
             await newOperador.save();
         }
@@ -30,23 +47,25 @@ operadoresCtrl.createOperador = async (req, res) => {
     } else{
         res.json({message: 'Ya existe el operador!', existe: true});
     }
-}
+});
 
-operadoresCtrl.getOperadores = async (req, res) => {
+router.get('/', async (req, res) => {
     const operadores = await Operador.find();
     res.json(operadores);
-}
-operadoresCtrl.getOperadoresSinAsignar = async (req, res) => {
+});
+
+router.get('/no/asignados', async (req, res) => {
     const operadores = await Operador.find({asignado: false}).sort({nombre: 1});
     res.json(operadores);
-}
-operadoresCtrl.getOperador = async (req, res) => {
+});
+
+router.get('/:id', async (req, res) => {
     const operador = await Operador.findById(req.params.id);
     res.json(operador);
-}
+});
 
-operadoresCtrl.updateOperador = async (req, res) => {
-    const { nombre, numEmpleado, telefono, estado } = req.body;
+router.put('/:id', async (req, res) => {
+    const { nombre, numEmpleado, telefono, estado, compania, numImss, numLicencia, tipoLicencia, vencimientoLicencia, medicinaPreventiva, vencimientoMedicinaPreventiva } = req.body;
     if(req.files.fotografia){
         const urlFotografia = req.files.fotografia.path;
         const pathFotografia = urlFotografia.slice(7);
@@ -55,36 +74,50 @@ operadoresCtrl.updateOperador = async (req, res) => {
             numEmpleado,
             telefono,
             estado,
-            pathFotografia
+            pathFotografia,
+            compania,
+            numImss,
+            numLicencia,
+            tipoLicencia,
+            vencimientoLicencia,
+            medicinaPreventiva,
+            vencimientoMedicinaPreventiva
         });    
     } else{
         await Operador.findByIdAndUpdate(req.params.id, {
             nombre,
             numEmpleado,
             telefono,
-            estado
+            estado,
+            compania,
+            numImss,
+            numLicencia,
+            tipoLicencia,
+            vencimientoLicencia,
+            medicinaPreventiva,
+            vencimientoMedicinaPreventiva
         });
     }
     res.json({message: 'Operador actualizado'});
-}
+});
 
-operadoresCtrl.updateOperadorAsignado = async (req, res) => {
+router.put('/asignado/:id', async (req, res) => {
     await Operador.findByIdAndUpdate(req.params.id, {
         asignado: true,
         estado: 'Activo'
     });
     res.json({message: 'Operador asignado'});
-}
+});
 
-operadoresCtrl.updateOperadorDesasignado = async (req, res) => {
+router.put('/desasignado/:id', async (req, res) => {
     await Operador.findByIdAndUpdate(req.params.id, {
         asignado: false,
         estado: 'No asignado'
     });
     res.json({message: 'Operador desasignado'});
-}
+});
 
-operadoresCtrl.deleteOperador = async (req, res) => {
+router.delete('/:id', async (req, res) => {
     const unidades = await Unidad.find(); 
     unidades.map(async unidad => {
         if(req.params.id === unidad.operador1){
@@ -101,6 +134,6 @@ operadoresCtrl.deleteOperador = async (req, res) => {
     await Operador.findByIdAndDelete(req.params.id);
     res.json({message: 'Operador eliminado'});
 
-}
+});
 
-module.exports = operadoresCtrl;
+module.exports = router;

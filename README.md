@@ -14,7 +14,7 @@ Este es un programa creado para tener control de las unidades en las bases de la
 ```
 
 
-# Creado por 
+# Creado y diseñado por:
 Luis Angel Avila Gurrola
 
 # Licencia

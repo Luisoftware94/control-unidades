@@ -8,6 +8,9 @@ const unidadSchema = new Schema({
     estado: String,
     operador1: String,
     operador2: String,
-    rol: String
+    rol: String,
+    base: String,
+    fechaAccidente: Date,
+    ubicacionAccidente: String
 });
 module.exports = model('Unidad', unidadSchema);

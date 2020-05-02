@@ -1,14 +1,29 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import M from 'materialize-css';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+
 const ip = "http://localhost:4000/";
 
-export default class CreateRol extends Component {
+class CreateRol extends Component {
+    static propTypes = {
+        auth: PropTypes.object.isRequired
+    };
     state = {
         nombre: "",
         descripcion: "",
         editing: false,
         _id: ""
+    }
+    requireAuth(auth){
+        if(!auth){
+            this.props.history.push('/iniciarsesion');
+        } else{
+            if(this.props.auth.user.rol !== 'administrador'){
+                this.props.history.push('/roles');
+            }
+        }
     }
     async componentDidMount(){
         if(this.props.match.params.id){
@@ -21,6 +36,8 @@ export default class CreateRol extends Component {
             });
             this.actualizarInputs();
         }
+        const { isAuthenticated } = this.props.auth;
+        this.requireAuth(isAuthenticated);
     }
     actualizarInputs(){
         M.updateTextFields();
@@ -106,3 +123,8 @@ export default class CreateRol extends Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    auth: state.auth  
+});
+export default connect(mapStateToProps, null)(CreateRol);

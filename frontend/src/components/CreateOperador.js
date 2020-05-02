@@ -1,11 +1,20 @@
-import React, { Component } from 'react'
-import M from 'materialize-css'
-import axios from 'axios'
-import FormData from 'form-data'
+import React, { Component } from 'react';
+import M from 'materialize-css';
+import axios from 'axios';
+import FormData from 'form-data';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+
+import moment from 'moment';
 const ip = "http://localhost:4000/";
 
-export default class CreateOperador extends Component {
-    
+class CreateOperador extends Component {
+    static propTypes = {
+        auth: PropTypes.object.isRequired
+    };
     state={
         nombre: "",
         numEmpleado: "",
@@ -14,11 +23,25 @@ export default class CreateOperador extends Component {
         asignado: "",
         fotografia: "",
         editing: false,
-        _id: ""
+        _id: "",
+        compania: "",
+        numImss: "",
+        numLicencia: "",
+        tipoLicencia: "",
+        vencimientoLicencia: new Date(),
+        medicinaPreventiva: "",
+        vencimientoMedicinaPreventiva: new Date()
     }
-
+    requireAuth(auth){
+        if(!auth){
+            this.props.history.push('/iniciarsesion');
+        } else{
+            if(this.props.auth.user.rol !== 'administrador'){
+                this.props.history.push('/');
+            }  
+        }
+    }
     async componentDidMount(){
-        
         document.addEventListener('DOMContentLoaded', function() {
             var elems = document.querySelectorAll('select');
             M.FormSelect.init(elems);
@@ -31,10 +54,27 @@ export default class CreateOperador extends Component {
                 telefono: res.data.telefono,
                 estado: res.data.estado,
                 asignado: res.data.asignado,
+                compania: res.data.compania,
+                numImss: res.data.numImss,
+                numLicencia: res.data.numLicencia,
+                tipoLicencia: res.data.tipoLicencia,
+                medicinaPreventiva: res.data.medicinaPreventiva,
                 editing: true,
                 _id: this.props.match.params.id
             });
+            if(res.data.vencimientoLicencia){
+                this.setState({
+                    vencimientoLicencia: moment(res.data.vencimientoLicencia).toDate()
+                });
+            }
+            if(res.data.vencimientoMedicinaPreventiva){
+                this.setState({
+                    vencimientoMedicinaPreventiva: moment(res.data.vencimientoMedicinaPreventiva).toDate()
+                });
+            }
             this.actualizarInputs();
+            const { isAuthenticated } = this.props.auth;
+            this.requireAuth(isAuthenticated);
         }
     }
     actualizarInputs(){
@@ -75,6 +115,15 @@ export default class CreateOperador extends Component {
             M.toast({html: 'El nombre debe contener por lo menos 10 caracteres y menos de 100'});
         }
     }
+
+    onchangeDateLicencia = vencimientoLicencia => {
+        this.setState({vencimientoLicencia});
+    }
+
+    onchangeDateMedicinaPrev = vencimientoMedicinaPreventiva => {
+        this.setState({vencimientoMedicinaPreventiva});
+    }
+
     onSubmit = async (e) => {
         e.preventDefault();
         if(this.validarFormulario()){
@@ -84,6 +133,14 @@ export default class CreateOperador extends Component {
             form.append('telefono', this.state.telefono);
             form.append('estado', this.state.estado);
             form.append('fotografia', this.state.fotografia);
+            form.append('compania', this.state.compania);
+            form.append('numImss', this.state.numImss);
+            form.append('numLicencia', this.state.numLicencia);
+            form.append('tipoLicencia', this.state.tipoLicencia);
+            form.append('vencimientoLicencia', this.state.vencimientoLicencia);
+            form.append('medicinaPreventiva', this.state.medicinaPreventiva);
+            form.append('vencimientoMedicinaPreventiva', this.state.vencimientoMedicinaPreventiva);
+
             if(this.state.editing){
                 const res = await axios.put(ip + 'api/operadores/' + this.state._id, form);
                 M.toast({html: res.data.message});
@@ -134,7 +191,6 @@ export default class CreateOperador extends Component {
                                     <div className="input-field">
                                         <input id="telefono" type="tel" className="validate" name="telefono" onChange={this.onInputChange} value={this.state.telefono}/>
                                         <label htmlFor="telefono">Teléfono</label>
-                                        <span className="helper-text" data-error="Debe contener 10 dígitos" data-success="Excelente">10 dígitos</span>
                                     </div>
                                     <div className="input-field">
                                         <select className="browser-default" name="estado" onChange={this.onInputChange} value={this.state.estado}>
@@ -159,6 +215,60 @@ export default class CreateOperador extends Component {
                                             <option value="Baja">Baja</option>
                                         </select>
                                     </div>
+                                    
+                                    <div className="input-field">
+                                        <select className="browser-default" name="compania" onChange={this.onInputChange} value={this.state.compania}>
+                                            <option value="" disabled>Elige la compañia</option>
+                                            <option value="ODM">1 - ODM</option>
+                                            <option value="OMEX">2 - OMEX</option>
+                                            <option value="COMARCA">31 - COMARCA</option>
+                                            <option value="TRANSFER">42 - TRANSFER</option>
+                                            <option value="TCJS">43 - TCJS</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="input-field">
+                                        <input id="numImss" type="text" name="numImss" onChange={this.onInputChange} value={this.state.numImss}/>
+                                        <label htmlFor="numImss">Número de IMSS</label>
+                                    </div>
+                                    
+                                    <div className="input-field">
+                                        <input id="numLicencia" type="text" name="numLicencia" onChange={this.onInputChange} value={this.state.numLicencia}/>
+                                        <label htmlFor="numLicencia">Número de licencia</label>
+                                    </div>
+                                        
+                                    <div className="input-field">
+                                        <input id="tipoLicencia" type="text" name="tipoLicencia" onChange={this.onInputChange} value={this.state.tipoLicencia}/>
+                                        <label htmlFor="tipoLicencia">Tipo de licencia</label>
+                                    </div>
+                                        
+                                    <div className="input-field">
+                                        <p className="label-fechaAccidente" >Vigencia de licencia</p>
+                                        <DatePicker 
+                                            selected={this.state.vencimientoLicencia}
+                                            onChange={this.onchangeDateLicencia}
+                                            className="fechaAccidente"
+                                            id="fechaAccidente"
+                                            name="fechaAccidente"
+                                        />
+                                    </div>
+                                    
+                                    <div className="input-field">
+                                        <input id="medicinaPreventiva" type="text" name="medicinaPreventiva" onChange={this.onInputChange} value={this.state.medicinaPreventiva}/>
+                                        <label htmlFor="medicinaPreventiva">Número de medicina preventiva</label>
+                                    </div>
+                                    
+                                    <div className="input-field">
+                                        <p className="label-fechaAccidente" >Vigencia de medicina preventiva</p>
+                                        <DatePicker 
+                                            selected={this.state.vencimientoMedicinaPreventiva}
+                                            onChange={this.onchangeDateMedicinaPrev}
+                                            className="vencimientoMedicinaPreventiva"
+                                            id="vencimientoMedicinaPreventiva"
+                                            name="vencimientoMedicinaPreventiva"
+                                        />
+                                    </div>
+
                                     <div className="file-field input-field">
                                         <p className="label-foto">Fotografía</p>
                                         <div className="btn btn-foto">
@@ -183,3 +293,7 @@ export default class CreateOperador extends Component {
         )
     }
 }
+const mapStateToProps = state => ({
+    auth: state.auth  
+});
+export default connect(mapStateToProps, null)(CreateOperador);

@@ -15,10 +15,11 @@ app.use(express.json());
 app.use(formidable.parse({ keepExtensions: true, uploadDir:"images" }));
 
 //****   routes
-app.use('/api/operadores', require('./routes/operadores'));
-app.use('/api/unidades', require('./routes/unidades'));
-app.use('/api/roles', require('./routes/roles'));
+app.use('/api/operadores', require('./controllers/operadores.controller'));
+app.use('/api/unidades', require('./controllers/unidades.controller'));
+app.use('/api/roles', require('./controllers/roles.controller'));
 app.use('/api/historialunidades', require('./routes/historialUnidades'));
+app.use('/api/users', require('./controllers/users.controller'));
 
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static('frontend/build'));

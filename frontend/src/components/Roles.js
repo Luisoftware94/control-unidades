@@ -2,11 +2,23 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ObtenerUnidad from './ObtenerUnidad';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+
+
 const ip = "http://localhost:4000/"
 
-export default class Roles extends Component {
+class Roles extends Component {
+    static propTypes = {
+        auth: PropTypes.object.isRequired
+    };
     state = {
         roles: []
+    }
+    requireAuth(auth){
+        if(!auth){
+            this.props.history.push('/iniciarsesion');
+        }
     }
     async getRoles(){
         const res = await axios.get(ip + 'api/roles');
@@ -15,6 +27,8 @@ export default class Roles extends Component {
         });
     }
     async componentDidMount(){
+        const { isAuthenticated } = this.props.auth;
+        this.requireAuth(isAuthenticated);
         this.getRoles();
     }
     render() {
@@ -31,18 +45,32 @@ export default class Roles extends Component {
                                         <p>Unidades:</p>
                                         <ObtenerUnidad rol={rol._id} />
                                     </div>
-                                    <div className="card-action action-roles">
-                                        <Link to={"/editarrol/" + rol._id } className="right">Editar</Link>
-                                    </div>
+                                    {
+                                        this.props.auth.user.rol === 'administrador' ?
+                                            <div className="card-action action-roles">
+                                                <Link to={"/editarrol/" + rol._id } className="right">Editar</Link>
+                                            </div> : null
+                                    }
                                 </div>
                             </div>
                         ))
                     }
                 </div>
-                <div className="fixed-action-btn">
-                    <Link to="/crearrol" className="btn-floating btn-large waves-effect waves-light red "><i className="material-icons">add</i></Link>
-                </div>
+                {
+                    this.props.auth.isAuthenticated ?
+                        this.props.auth.user.rol === 'administrador' ?
+                            <div className="fixed-action-btn">
+                                <Link to="/crearrol" className="btn-floating btn-large waves-effect waves-light red "><i className="material-icons">add</i></Link>
+                            </div> : null
+                        :
+                        null
+                }
             </div>
         )
     }
 }
+
+const mapStateToProps = state => ({
+    auth: state.auth  
+});
+export default connect(mapStateToProps, null)(Roles);

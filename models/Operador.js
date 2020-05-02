@@ -15,6 +15,13 @@ const operadorSchema = new Schema({
     asignado: {
         type: Boolean,
         default: false
-    }
+    },
+    compania: String,
+    numImss: String,
+    numLicencia: String,
+    tipoLicencia: String,
+    vencimientoLicencia: Date,
+    medicinaPreventiva: String,
+    vencimientoMedicinaPreventiva: Date
 });
 module.exports = model('Operador', operadorSchema);

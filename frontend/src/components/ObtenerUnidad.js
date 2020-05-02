@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios';
-const ip = "http://localhost:4000/"
+import { Link } from 'react-router-dom';
+const ip = "http://localhost:4000/";
 
 export default class ObtenerUnidad extends Component {
     state = {
@@ -27,7 +28,7 @@ export default class ObtenerUnidad extends Component {
                     document.getElementById(unidad._id).classList.add('yellow-fuerte');
                     break;
                 case 'Guardia':
-                    document.getElementById(unidad._id).classList.add('yellow-fuerte');
+                    document.getElementById(unidad._id).classList.add('azul');
                     break;
                 case 'Accidente':
                     document.getElementById(unidad._id).classList.add('red');
@@ -47,14 +48,14 @@ export default class ObtenerUnidad extends Component {
                         <div className="collection">
                             {
                                 this.state.unidades.map(unidad => (
-                                    <a href="#!" key={unidad._id} className="collection-item">
+                                    <Link to={"/detalleunidad/" + unidad._id} key={unidad._id} className="collection-item">
                                         {
                                             unidad.estado ? 
                                                 <span className="badge" id={unidad._id}>{ unidad.estado }</span> :
                                                 <span className="badge" id={unidad._id}>Sin estado</span>
                                         }
                                         { unidad.numUnidad }
-                                    </a>
+                                    </Link>
                                 ))
                             }
                         </div> :

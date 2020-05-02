@@ -1,9 +1,9 @@
-const rolesCtrl = {};
-
 const Rol = require('../models/Rol');
 const Unidad = require('../models/Unidad');
+const { Router } = require('express');
+const router = Router();
 
-rolesCtrl.createRol = async (req, res) => {
+router.post('/', async (req, res) => {
     const { nombre, descripcion } = req.body;
     const newRol = new Rol({
         nombre,
@@ -11,28 +11,28 @@ rolesCtrl.createRol = async (req, res) => {
     });
     await newRol.save();
     res.json({ message: 'Rol guardado!' });
-}
+});
 
-rolesCtrl.getRoles = async (req, res) => {
+router.get('/', async (req, res) => {
     const roles = await Rol.find().sort({nombre:1});
     res.json(roles);
-}
+});
 
-rolesCtrl.getRol = async (req, res) => {
+router.get('/:id', async (req, res) => {
     const operador = await Rol.findById(req.params.id);
     res.json(operador);
-}
+});
 
-rolesCtrl.updateRol = async (req, res) => {
+router.put('/:id', async (req, res) => {
     const { nombre, descripcion } = req.body;
     await Rol.findByIdAndUpdate(req.params.id, {
         nombre,
         descripcion
     });
     res.json({ message: 'Rol actualizado!' });
-}
+});
 
-rolesCtrl.deleteRol = async (req, res) => {
+router.delete(':/id', async (req, res) => {
     const unidadesRol = await Unidad.find({rol: req.params.id});
     unidadesRol.map(async unidad => {
         await Unidad.findByIdAndUpdate(unidad._id , {
@@ -41,6 +41,6 @@ rolesCtrl.deleteRol = async (req, res) => {
     });
     await Rol.findByIdAndDelete(req.params.id);
     res.json({ message: 'Rol eliminado' });
-}
+});
 
-module.exports = rolesCtrl;
+module.exports = router;

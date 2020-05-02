@@ -1,22 +1,26 @@
-const unidadesCtrl = {};
-
+const { Router } = require('express');
+const router = Router();
 const Unidad = require('../models/Unidad');
 const HistorialUnidad = require('../models/HistorialUnidad');
 const Operador = require('../models/Operador');
+const auth = require('../middleware/auth');
 
-unidadesCtrl.getUnidades = async (req, res) => {
+router.get('/', auth, async (req, res) => {
     const unidades = await Unidad.find();
     res.json(unidades);
-}
+});
 
-unidadesCtrl.createUnidad = async (req, res) => {
-    const { numUnidad, estado, operador1, operador2, rol } = req.body;
+router.post('/', async (req, res) => {
+    const { numUnidad, estado, operador1, operador2, rol, base, fechaAccidente, ubicacionAccidente } = req.body;
     const newUnidad = new Unidad({
         numUnidad,
         estado,
         operador1,
         operador2,
-        rol
+        rol,
+        base,
+        fechaAccidente,
+        ubicacionAccidente
     });
     const unidad = await Unidad.findOne({numUnidad: numUnidad});
     if(!unidad){
@@ -30,25 +34,29 @@ unidadesCtrl.createUnidad = async (req, res) => {
     }else{
         res.json({ message: 'Ya existe esa unidad!', existe: true });
     }
-}
+});
 
-unidadesCtrl.getUnidad = async (req, res) => {
+router.get('/:id', async (req, res) => {
     const unidad = await Unidad.findById(req.params.id);
     res.json(unidad);
-}
+});
 
-unidadesCtrl.updateUnidad = async (req, res) => {
-    const { numUnidad, estado, operador1, operador2, rol } = req.body;
+router.put('/:id', async (req, res) => {
+    const { numUnidad, estado, operador1, operador2, rol, base, fechaAccidente, ubicacionAccidente } = req.body;
     await Unidad.findByIdAndUpdate(req.params.id , {
         numUnidad,
         estado,
         operador1,
         operador2,
-        rol
+        rol,
+        base,
+        fechaAccidente,
+        ubicacionAccidente
     });
     res.json({ message: 'Unidad actualizada!' });
-}
-unidadesCtrl.deleteUnidad = async (req, res) => {
+});
+
+router.delete('/:id', async (req, res) => {
     const unidad = await Unidad.findById(req.params.id);
     if(unidad.operador1){
         await Operador.findByIdAndUpdate(unidad.operador1, {
@@ -65,16 +73,16 @@ unidadesCtrl.deleteUnidad = async (req, res) => {
     await Unidad.findByIdAndDelete(req.params.id);
     await HistorialUnidad.find().deleteMany({unidad: unidad.numUnidad});
     res.json({ message: 'Unidad eliminada' });
-}
+});
 
-unidadesCtrl.getUnidadRol = async (req, res) => {
+router.get('/rol/:rol', async (req, res) => {
     const unidadesRol = await Unidad.find({rol: req.params.rol});
     res.json(unidadesRol);
-}
+});
 
-unidadesCtrl.getUnidadesPorRol = async (req, res) => {
+router.get('/unidades/rol', async (req, res) => {
     const unidadesPorRol = await Unidad.find().sort({numUnidad: 1, rol: 1});
     res.json(unidadesPorRol);
-}
+});
 
-module.exports = unidadesCtrl;
+module.exports = router;

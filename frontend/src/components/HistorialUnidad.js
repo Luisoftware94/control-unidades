@@ -1,12 +1,22 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import { format } from 'timeago.js';
-import { Link } from 'react-router-dom';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+
 const ip = "http://localhost:4000/"
 
-export default class HistorialUnidad extends Component {
+class HistorialUnidad extends Component {
+    static propTypes = {
+        auth: PropTypes.object.isRequired
+    };
     state = {
         historial: []
+    }
+    requireAuth(auth){
+        if(!auth){
+            this.props.history.push('/iniciarsesion');
+        }
     }
     async getHistorial(){
         const res = await axios.get(ip + 'api/historialunidades/' + this.props.match.params.unidad);
@@ -16,6 +26,10 @@ export default class HistorialUnidad extends Component {
     }
     componentDidMount(){
         this.getHistorial();
+    }
+    componentWillUpdate(){
+        const { isAuthenticated } = this.props.auth;
+        this.requireAuth(isAuthenticated);
     }
     render() {
         return (
@@ -45,11 +59,7 @@ export default class HistorialUnidad extends Component {
                                 </table>
                             </div>
                             <div className="contenedor-button-historial">
-                                <Link to={"/unidades"} className="right">
-                                    <button className="btn waves-effect waves-light">Regresar</button>
-                                </Link>
-
-                                
+                                <button onClick={this.props.history.goBack} className="btn waves-effect waves-light f-right">Regresar</button>
                             </div>
                         </div>
                     </div>
@@ -58,3 +68,7 @@ export default class HistorialUnidad extends Component {
         )
     }
 }
+const mapStateToProps = state => ({
+    auth: state.auth  
+});
+export default connect(mapStateToProps, null)(HistorialUnidad);

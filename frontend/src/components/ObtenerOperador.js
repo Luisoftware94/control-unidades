@@ -13,6 +13,7 @@ export default class ObtenerOperador extends Component {
         this.setState({
             operador: res.data
         });
+        return true;
     }
     componentDidMount(){
         this.obtenerOperador();
