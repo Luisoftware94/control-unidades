@@ -46,6 +46,21 @@ class Operadores extends Component {
             operadoresCompania[i].classList.remove("no-mostrar");
         }
     }
+    buscarOperador(e){
+        const todosOperadores = document.getElementsByClassName('operadores-control');
+        const operadores = document.getElementsByClassName(e.target.value);
+        if(operadores.length > 0){
+            for(var i = 0; i < todosOperadores.length; i++){
+                todosOperadores[i].classList.add("no-mostrar");
+            }
+            operadores[0].classList.remove("no-mostrar");
+        } else{
+            for(i = 0; i < todosOperadores.length; i++){
+                todosOperadores[i].classList.remove("no-mostrar");
+            }
+        }
+        
+    }
     asignarColores(){
         if(this.props.auth.isAuthenticated){
             this.state.operadores.map((operador) => {
@@ -100,11 +115,15 @@ class Operadores extends Component {
                         <option value="TRANSFER">TRANSFER</option>
                         <option value="TCJS" default>TCJS</option>
                     </select>
+                    <div className="buscador-operadores">
+                        <input onChange={this.buscarOperador} type="text" placeholder="Buscar operador..." name="buscar" className="browser-default input-buscador" id="buscar-operador"></input>
+                        <button><i className="fa fa-search"></i></button>
+                    </div>
                 </div>
                 <div className="row">
                     {
                         this.state.operadores.map(operador => (
-                            <div className={"col s12 m6 l4 xl3 operadores-control " + operador.compania} key={operador._id}>
+                            <div className={"col s12 m6 l4 xl3 operadores-control " + operador.compania + " " + operador.numEmpleado} key={operador._id}>
                                 <div className="card">
                                     <div className="card-content card-operador">
                                         <div className="card-operador-compania">

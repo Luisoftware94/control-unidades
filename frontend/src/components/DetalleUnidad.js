@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 import {connect} from 'react-redux';
+import ObtenerEstadoUnidad from './ObtenerEstadoUnidad';
 import PropTypes from 'prop-types';
 
 const ip = "http://localhost:4000/";
@@ -20,14 +21,10 @@ class DetalleUnidad extends Component {
     requireAuth(auth){
         if(!auth){
             this.props.history.push('/iniciarsesion');
-        } else{
-            this.asignarColores();
         }
     }
     async componentDidMount(){
         this.getUnidad();
-    }
-    componentWillUpdate(){
         const { isAuthenticated } = this.props.auth;
         this.requireAuth(isAuthenticated);
     }
@@ -48,29 +45,7 @@ class DetalleUnidad extends Component {
     async getRol(){
         const resRol = await axios.get(ip + 'api/roles/' + this.state.unidad.rol);
         this.setState({rol: resRol.data.nombre});
-    }    
-    asignarColores(){
-        if(this.props.auth.isAuthenticated){
-            switch(this.state.unidad.estado){
-                case 'Activo':
-                    document.getElementById(this.state.unidad._id).classList.add('green');
-                    break;
-                case 'Taller':
-                    document.getElementById(this.state.unidad._id).classList.add('yellow-fuerte');
-                    break;
-                case 'Guardia':
-                    document.getElementById(this.state.unidad._id).classList.add('azul');
-                    break;
-                case 'Accidente':
-                    document.getElementById(this.state.unidad._id).classList.add('red');
-                    break;
-                default:
-                    document.getElementById(this.state.unidad._id).classList.add('gray');
-                    break;
-                
-            }
-        }
-    }
+    } 
     render() {
         return (
             <div className="row">
@@ -223,14 +198,7 @@ class DetalleUnidad extends Component {
                                     </div>
                                 : null
                         }
-                        
-                        <div className="estado-unidad-principal" id={this.state.unidad._id}>
-                            {
-                                this.state.unidad.estado ?
-                                    <h6>{ this.state.unidad.estado }</h6> :
-                                    <h6>Sin estado</h6>
-                            }
-                        </div>
+                        <ObtenerEstadoUnidad estado={this.state.unidad.estado} unidad={this.state.unidad._id} />
                     </div>
                 </div>
             </div>

@@ -51,7 +51,7 @@ class ObtenerUnidades extends Component{
                         <div>
                             {
                                 this.state.unidades.map(unidad => (
-                                    <div className={"col s12 m10 offset-m1 l6 " + unidad.rol + " unidad-control"} key={unidad._id}>
+                                    <div className={"col s12 m10 offset-m1 l6 " + unidad.rol + " unidad-control " + unidad.numUnidad} key={unidad._id}>
                                         <div className="card card-unidad">
                                             <div className="card-content content-unidad">
                                                 <div className="card-title"><h4 className="unidad-title">Unidad { unidad.numUnidad}</h4></div>
@@ -150,6 +150,20 @@ class Unidades extends Component {
             unidadesRol[i].classList.remove("no-mostrar");
         }
     }
+    buscarUnidad(e){
+        const todasUnidades = document.getElementsByClassName('unidad-control');
+        const unidades = document.getElementsByClassName(e.target.value);
+        if(unidades.length > 0){
+            for(var i = 0; i < todasUnidades.length; i++){
+                todasUnidades[i].classList.add("no-mostrar");
+            }
+            unidades[0].classList.remove("no-mostrar");
+        } else{
+            for(i = 0; i < todasUnidades.length; i++){
+                todasUnidades[i].classList.remove("no-mostrar");
+            }
+        }
+    }
     render() {
         return (
             <div className="container">
@@ -165,6 +179,10 @@ class Unidades extends Component {
                             )
                         }
                     </select>
+                    <div className="buscador-operadores">
+                        <input onChange={this.buscarUnidad} type="text" placeholder="Buscar unidad..." name="buscar" className="browser-default input-buscador" id="buscar-operador"></input>
+                        <button><i className="fa fa-search"></i></button>
+                    </div>
                 </div>
                 {
                     this.state.roles.map(rol => (
