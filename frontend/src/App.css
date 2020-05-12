@@ -1980,3 +1980,7 @@ span.badge{color:white !important;}
     font-size: 12px;
     text-align: center !important;
 }
+.contenedor-stats td{
+    text-decoration: underline;
+    color: blue;
+}

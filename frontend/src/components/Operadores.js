@@ -37,8 +37,9 @@ class Operadores extends Component {
     contadorOperadores(){
         var activos = 0, permiso = 0, posturero = 0, 
             incapacidad = 0, ausentismo = 0, capacitacion = 0, 
-            suspencion = 0, juridico = 0, baja = 0;
+            suspencion = 0, juridico = 0, baja = 0, todos = 0;
         this.state.operadores.map((operador) => {
+            todos++;
             switch(operador.estado){
                 case 'Activo':
                     activos++;
@@ -72,6 +73,7 @@ class Operadores extends Component {
             }
             return true;
         });
+        document.getElementById('tabla-todos').innerHTML = todos;
         document.getElementById('tabla-activos').innerHTML = activos;
         document.getElementById('tabla-permiso').innerHTML = permiso;
         document.getElementById('tabla-posturero').innerHTML = posturero;
@@ -150,7 +152,22 @@ class Operadores extends Component {
                 return true;
             });
         }
-        
+    }
+    estadoOperador(estado){
+        const operadores = document.getElementsByClassName(estado);
+        const todosOperadores = document.getElementsByClassName('operadores-control');
+        if(estado === 'Todos'){
+            for(var i = 0; i < todosOperadores.length; i++){
+                todosOperadores[i].classList.remove("no-mostrar");
+            }
+        } else{
+            for(i = 0; i < todosOperadores.length; i++){
+                todosOperadores[i].classList.add("no-mostrar");
+            }
+            for(i = 0; i < operadores.length; i++){
+                operadores[i].classList.remove("no-mostrar");
+            }
+        }
     }
 
     render() {
@@ -178,6 +195,7 @@ class Operadores extends Component {
                             <table>
                                 <thead>
                                     <tr>
+                                        <th>Todo</th>
                                         <th>Act</th>
                                         <th>Perm</th>
                                         <th>Post</th>
@@ -191,15 +209,16 @@ class Operadores extends Component {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td id="tabla-activos"></td>
-                                        <td id="tabla-permiso"></td>
-                                        <td id="tabla-posturero"></td>
-                                        <td id="tabla-incapacidad"></td>
-                                        <td id="tabla-ausentismo"></td>
-                                        <td id="tabla-capacitacion"></td>
-                                        <td id="tabla-suspencion"></td>
-                                        <td id="tabla-juridico"></td>
-                                        <td id="tabla-baja"></td>
+                                        <td onClick={this.estadoOperador.bind(this, 'Todos')}><p id="tabla-todos"></p></td>
+                                        <td onClick={this.estadoOperador.bind(this, 'Activo')}><p id="tabla-activos"></p></td>
+                                        <td onClick={this.estadoOperador.bind(this, 'Permiso')}><p id="tabla-permiso"></p></td>
+                                        <td onClick={this.estadoOperador.bind(this, 'Posturero')}><p id="tabla-posturero"></p></td>
+                                        <td onClick={this.estadoOperador.bind(this, 'Incapacidad')}><p id="tabla-incapacidad"></p></td>
+                                        <td onClick={this.estadoOperador.bind(this, 'Ausentismo')}><p id="tabla-ausentismo"></p></td>
+                                        <td onClick={this.estadoOperador.bind(this, 'Capacitación')}><p id="tabla-capacitacion"></p></td>
+                                        <td onClick={this.estadoOperador.bind(this, 'Suspención')}><p id="tabla-suspencion"></p></td>
+                                        <td onClick={this.estadoOperador.bind(this, 'Jurídico')}><p id="tabla-juridico"></p></td>
+                                        <td onClick={this.estadoOperador.bind(this, 'Baja')}><p id="tabla-baja"></p></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -209,7 +228,7 @@ class Operadores extends Component {
                 <div className="row">
                     {
                         this.state.operadores.map(operador => (
-                            <div className={"col s12 m6 l4 xl3 operadores-control " + operador.compania + " " + operador.numEmpleado} key={operador._id}>
+                            <div className={"col s12 m6 l4 xl3 operadores-control " + operador.compania + " " + operador.numEmpleado + " " + operador.estado} key={operador._id}>
                                 <div className="card">
                                     <div className="card-content card-operador">
                                         <div className="card-operador-compania">
