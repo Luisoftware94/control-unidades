@@ -31,6 +31,57 @@ class Operadores extends Component {
         });
         this.asignarColores();
     }
+    componentDidUpdate(){
+        this.contadorOperadores();
+    }
+    contadorOperadores(){
+        var activos = 0, permiso = 0, posturero = 0, 
+            incapacidad = 0, ausentismo = 0, capacitacion = 0, 
+            suspencion = 0, juridico = 0, baja = 0;
+        this.state.operadores.map((operador) => {
+            switch(operador.estado){
+                case 'Activo':
+                    activos++;
+                    break;
+                case 'Permiso':
+                    permiso++;
+                    break;
+                case 'Posturero':
+                    posturero++;
+                    break;
+                case 'Incapacidad':
+                    incapacidad++;
+                    break;
+                case 'Ausentismo':
+                    ausentismo++;
+                    break;
+                case 'Capacitación':
+                    capacitacion++;
+                    break;
+                case 'Suspención':
+                    suspencion++;
+                    break;
+                case 'Baja':
+                    baja++;
+                    break;
+                case 'Jurídico':
+                    juridico++;
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        });
+        document.getElementById('tabla-activos').innerHTML = activos;
+        document.getElementById('tabla-permiso').innerHTML = permiso;
+        document.getElementById('tabla-posturero').innerHTML = posturero;
+        document.getElementById('tabla-incapacidad').innerHTML = incapacidad;
+        document.getElementById('tabla-ausentismo').innerHTML = ausentismo;
+        document.getElementById('tabla-capacitacion').innerHTML = capacitacion;
+        document.getElementById('tabla-suspencion').innerHTML = suspencion;
+        document.getElementById('tabla-juridico').innerHTML = juridico;
+        document.getElementById('tabla-baja').innerHTML = baja;
+    }
     operadoresCompania(e){
         const todosOperadores = document.getElementsByClassName('operadores-control');
         const operadoresCompania = document.getElementsByClassName(e.target.value);
@@ -118,6 +169,41 @@ class Operadores extends Component {
                     <div className="buscador-operadores">
                         <input onChange={this.buscarOperador} type="text" placeholder="Buscar operador..." name="buscar" className="browser-default input-buscador" id="buscar-operador"></input>
                         <button><i className="fa fa-search"></i></button>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col s12">
+                        <div className="card contenedor-stats">
+                            <h3>Estado de operadores</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Act</th>
+                                        <th>Perm</th>
+                                        <th>Post</th>
+                                        <th>Inca</th>
+                                        <th>Ause</th>
+                                        <th>Capa</th>
+                                        <th>Susp</th>
+                                        <th>Jurí</th>
+                                        <th>Baj</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td id="tabla-activos"></td>
+                                        <td id="tabla-permiso"></td>
+                                        <td id="tabla-posturero"></td>
+                                        <td id="tabla-incapacidad"></td>
+                                        <td id="tabla-ausentismo"></td>
+                                        <td id="tabla-capacitacion"></td>
+                                        <td id="tabla-suspencion"></td>
+                                        <td id="tabla-juridico"></td>
+                                        <td id="tabla-baja"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div className="row">

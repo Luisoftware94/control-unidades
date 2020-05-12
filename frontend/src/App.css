@@ -226,7 +226,9 @@
         height: 40px;
         width: 50px;
     }
-    
+    .contenedor-stats td, th{
+        font-size: 16px !important;
+    }
     .card-operador{
         height: 470px;
         width: 350px;
@@ -565,7 +567,9 @@
         height: 40px;
         width: 50px;
     }
-
+    .contenedor-stats td, th{
+        font-size: 16px !important;
+    }
 
     .card-operador{
         height: 440px;
@@ -906,7 +910,9 @@
         height: 40px;
         width: 50px;
     }
-
+    .contenedor-stats td, th{
+        font-size: 14px !important;
+    }
 
     .card-operador{
         height: 460px;
@@ -1260,7 +1266,9 @@
         height: 40px;
         width: 50px;
     }
-
+    .contenedor-stats td, th{
+        font-size: 14px !important;
+    }
 
     .card-operador{
         height: 460px;
@@ -1598,6 +1606,8 @@
     /*
     ********   css operadores
     */
+    
+
     .head-unidades select{
         width: 90px;
     }
@@ -1953,4 +1963,20 @@ span.badge{color:white !important;}
 }
 .f-right{
     float: right;
+}
+.contenedor-stats{
+    margin-top: -20px !important;
+}
+.contenedor-stats h3{
+    font-size: 24px;
+    text-align: center;
+    padding-top: 20px;
+}
+.contenedor-stats table{
+    width: 95%;
+    margin: 0 auto;
+}
+.contenedor-stats td, th{
+    font-size: 12px;
+    text-align: center !important;
 }
