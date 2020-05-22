@@ -314,6 +314,7 @@ class CreateUnidad extends Component {
                                             <div className="input-field">
                                                 <p className="label-fechaAccidente" >Fecha del accidente</p>
                                                 <DatePicker 
+                                                    dateFormat="dd/MM/yyyy"
                                                     selected={this.state.fechaAccidente}
                                                     onChange={this.onchangeDate}
                                                     className="fechaAccidente"

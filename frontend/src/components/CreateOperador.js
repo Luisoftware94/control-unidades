@@ -210,9 +210,10 @@ class CreateOperador extends Component {
                                             <option value="Incapacidad">Incapacidad</option>
                                             <option value="Ausentismo">Ausentismo</option>
                                             <option value="Capacitación">Capacitación</option>
-                                            <option value="Suspención">Suspención</option>
+                                            <option value="Suspención">Suspensión</option>
                                             <option value="Jurídico">Jurídico</option>
                                             <option value="Baja">Baja</option>
+                                            <option value="No-apto">No apto</option>
                                         </select>
                                     </div>
                                     
@@ -245,6 +246,7 @@ class CreateOperador extends Component {
                                     <div className="input-field">
                                         <p className="label-fechaAccidente" >Vigencia de licencia</p>
                                         <DatePicker 
+                                            dateFormat="dd/MM/yyyy"
                                             selected={this.state.vencimientoLicencia}
                                             onChange={this.onchangeDateLicencia}
                                             className="fechaAccidente"
@@ -261,6 +263,7 @@ class CreateOperador extends Component {
                                     <div className="input-field">
                                         <p className="label-fechaAccidente" >Vigencia de medicina preventiva</p>
                                         <DatePicker 
+                                            dateFormat="dd/MM/yyyy"
                                             selected={this.state.vencimientoMedicinaPreventiva}
                                             onChange={this.onchangeDateMedicinaPrev}
                                             className="vencimientoMedicinaPreventiva"

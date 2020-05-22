@@ -48,7 +48,7 @@
         font-size: 34px;
     }
     .carousel{
-        height: 685px !important;
+        height: 640px !important;
         background-color: white;
     }
     .carousel .slider-wrapper{
@@ -387,7 +387,7 @@
         font-size: 30px;
     }
     .carousel{
-        height: 590px !important;
+        height: 550px !important;
         background-color: white;
     }
     .carousel .slider-wrapper{
@@ -731,7 +731,7 @@
         font-size: 24px;
     }
     .carousel{
-        height: 500px !important;
+        height: 469px !important;
         background-color: white;
     }
     .carousel .slider-wrapper{
@@ -915,8 +915,8 @@
     }
 
     .card-operador{
-        height: 460px;
-        width: 245px;
+        height: 480px;
+        width: 255px;
         text-align: center;
         margin: 0 auto;
     }
@@ -1081,7 +1081,7 @@
         font-size: 24px;
     }
     .carousel{
-        height: 800px !important;
+        height: 759px !important;
         background-color: white;
     }
     .carousel .slider-wrapper{
@@ -1439,7 +1439,7 @@
         font-size: 16px;
     }
     .carousel{
-        height: 495px !important;
+        height: 462px !important;
         background-color: white;
     }
     .carousel .slider-wrapper{
@@ -1727,7 +1727,13 @@
         padding-top: 5px;
     }
 }/** termina  0px*/
-
+@media only screen and (min-width: 400px) and (max-width: 599px){
+    .contenedor-stats td, th{
+        font-size: 12px !important;
+        padding: 15px 2px !important;
+        text-align: center !important;
+    }
+}
 /**
 ******** principal
 */
@@ -1973,14 +1979,19 @@ span.badge{color:white !important;}
     padding-top: 20px;
 }
 .contenedor-stats table{
-    width: 95%;
+    width: 98%;
     margin: 0 auto;
 }
 .contenedor-stats td, th{
-    font-size: 12px;
+    font-size: 10px;
+    padding: 15px 2px !important;
     text-align: center !important;
 }
 .contenedor-stats td{
     text-decoration: underline;
     color: blue;
+    cursor: pointer;
+}
+.carousel .control-dots{
+    display: none;
 }

@@ -37,7 +37,7 @@ class Operadores extends Component {
     contadorOperadores(){
         var activos = 0, permiso = 0, posturero = 0, 
             incapacidad = 0, ausentismo = 0, capacitacion = 0, 
-            suspencion = 0, juridico = 0, baja = 0, todos = 0;
+            suspencion = 0, juridico = 0, baja = 0, todos = 0, noApto = 0;
         this.state.operadores.map((operador) => {
             todos++;
             switch(operador.estado){
@@ -68,6 +68,9 @@ class Operadores extends Component {
                 case 'Jurídico':
                     juridico++;
                     break;
+                case 'No-apto':
+                    noApto++;
+                    break;
                 default:
                     break;
             }
@@ -81,6 +84,7 @@ class Operadores extends Component {
         document.getElementById('tabla-ausentismo').innerHTML = ausentismo;
         document.getElementById('tabla-capacitacion').innerHTML = capacitacion;
         document.getElementById('tabla-suspencion').innerHTML = suspencion;
+        document.getElementById('tabla-no-apto').innerHTML = noApto;
         document.getElementById('tabla-juridico').innerHTML = juridico;
         document.getElementById('tabla-baja').innerHTML = baja;
     }
@@ -145,6 +149,9 @@ class Operadores extends Component {
                     case 'Jurídico':
                         document.getElementById(operador._id).classList.add('red');
                         break;
+                    case 'No-apto':
+                        document.getElementById(operador._id).classList.add('yellow-fuerte');
+                        break;
                     default:
                         document.getElementById(operador._id).classList.add('gray');
                         break;
@@ -203,6 +210,7 @@ class Operadores extends Component {
                                         <th>Ause</th>
                                         <th>Capa</th>
                                         <th>Susp</th>
+                                        <th>N/Ap</th>
                                         <th>Jurí</th>
                                         <th>Baj</th>
                                     </tr>
@@ -217,6 +225,7 @@ class Operadores extends Component {
                                         <td onClick={this.estadoOperador.bind(this, 'Ausentismo')}><p id="tabla-ausentismo"></p></td>
                                         <td onClick={this.estadoOperador.bind(this, 'Capacitación')}><p id="tabla-capacitacion"></p></td>
                                         <td onClick={this.estadoOperador.bind(this, 'Suspención')}><p id="tabla-suspencion"></p></td>
+                                        <td onClick={this.estadoOperador.bind(this, 'No-apto')}><p id="tabla-no-apto"></p></td>
                                         <td onClick={this.estadoOperador.bind(this, 'Jurídico')}><p id="tabla-juridico"></p></td>
                                         <td onClick={this.estadoOperador.bind(this, 'Baja')}><p id="tabla-baja"></p></td>
                                     </tr>
@@ -302,7 +311,14 @@ class Operadores extends Component {
                                     }
                                     <div className="estado-operador" id={operador._id}>
                                         {
-                                            operador.estado ? <h6>{operador.estado}</h6> : <h6>Sin estado</h6>
+                                            operador.estado ? 
+                                                operador.estado === 'No-apto' ?
+                                                        <h6>No apto</h6> :
+                                                        operador.estado === 'Suspención' ?
+                                                            <h6>Suspensión</h6> :
+                                                            <h6>{operador.estado}</h6> 
+                                                : 
+                                                <h6>Sin estado</h6>
                                         }
                                     </div>
                                 </div>
