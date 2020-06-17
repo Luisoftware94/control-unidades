@@ -21,4 +21,4 @@ Luis Angel Avila Gurrola
 Copyright - Todos los derechos reservados
 
 # Politica de uso
-Queda prohibido el uso del contenido sin el consentimiento del autor
+Queda prohibido todo uso del contenido sin el consentimiento del autor
