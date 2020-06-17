@@ -18,4 +18,7 @@ Este es un programa creado para tener control de las unidades en las bases de la
 Luis Angel Avila Gurrola
 
 # Licencia
-MIT
+Copyright - Todos los derechos reservados
+
+# Politica de uso
+Queda prohibido el uso del contenido sin el consentimiento del autor
